@@ -1,36 +1,59 @@
 import React, { useCallback, useState, VFC } from "react";
+import axios from 'axios';
 
-const WritePostForm: VFC = () => {
-    const [title,setTitle] = useState('');
-    const [content,setContent] = useState('');
+interface props{
+  setWritePostModal(arg0: boolean) : void;
+}
 
-    const onChangeTitle = useCallback((e) => {
-        setTitle(e.target.value);
-    },[])
+const WritePostForm: VFC<props> = ({setWritePostModal}) => {
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
 
-    const onChangeContent = useCallback((e)=>{
-        setContent(e.target.value);
-    },[]);
+  const onChangeTitle = useCallback((e) => {
+    setTitle(e.target.value);
+  }, []);
 
-    const onSubmitForm = useCallback((e)=>{
-        e.preventDefault();
-    },[]);
+  const onChangeContent = useCallback((e) => {
+    setContent(e.target.value);
+  }, []);
+
+  const onSubmitForm = useCallback((e) => {
+    e.preventDefault();
+    console.log(title);
+    console.log(content);
+    axios.post('http://localhost:3065/post',{
+      title : title,
+      content : content
+    },{
+      withCredentials : true
+    })
+    .then((response)=>{
+      console.log(response);
+      setWritePostModal(false);
+    })
+    .catch((err)=>{
+      console.error(err);
+    })
+  }, [title,content]);
 
   return (
-    <form className = 'p-8 border-2 w-2/4 m-auto rounded-2xl' onSubmit = {onSubmitForm}>
+    <form
+      className="p-8 border-2 w-2/4 m-auto rounded-2xl fixed inset-1/4  h-3/6"
+      onSubmit={onSubmitForm}
+    >
       <div>
         <span>Title</span>
         <input
           className="focus:border-light-blue-500 focus:ring-1 focus:ring-light-blue-500 focus:outline-none 
           block m-auto text-sm text-black placeholder-gray-500 
-          border border-gray-200 rounded-md w-3/4 py-2 pl-5 mt-4" 
+          border border-gray-200 rounded-md w-3/4 py-2 pl-5 mt-4"
           type="text"
           aria-label="Title"
           placeholder="Title"
-          onChange = {onChangeTitle}
+          onChange={onChangeTitle}
         />
       </div>
-      <div className = 'mt-8'>
+      <div className="mt-8">
         <span>Content</span>
         <textarea
           className="focus:border-light-blue-500 focus:ring-1 focus:ring-light-blue-500 focus:outline-none 
@@ -41,12 +64,9 @@ const WritePostForm: VFC = () => {
           onChange={onChangeContent}
         />
       </div>
-      <div>
-      <button
-        className="p-3  m-10 rounded-xl bg-green-100 w-1/4">
-            등록!
+        <button className="p-3  m-4 rounded-xl bg-green-100 w-1/4">
+          등록!
         </button>
-      </div>
     </form>
   );
 };

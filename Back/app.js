@@ -2,7 +2,7 @@ const express = require("express");
 const { Post } = require("./models");
 const db = require("./models");
 const morgan = require("morgan");
-
+const cors = require('cors');
 const app = express();
 
 app.use(morgan("dev"));
@@ -17,6 +17,12 @@ db.sequelize
   .catch((err) => {
     console.error(err);
   });
+
+  app.use(cors({
+    origin: true,
+    credentials: true, //이걸 해줘야 cookie도 같이 보낼 수 있다.
+}));
+
 
 app.get("/", (req, res, next) => {
   res.send("Hi~");
@@ -35,6 +41,7 @@ app.get("/posts", async (req, res, next) => {
 });
 
 app.post("/post", async (req, res, next) => {
+  console.log('dfd');
   try {
     const post = await Post.findOne({
       where: { title: req.body.title },
@@ -42,7 +49,7 @@ app.post("/post", async (req, res, next) => {
     if (post) {
       return res.status(403).send("이미 같은 제목의 게시글이 존재합니다.");
     }
-    const new_post = await Post.create({
+    await Post.create({
       title: req.body.title,
       content: req.body.content,
     });

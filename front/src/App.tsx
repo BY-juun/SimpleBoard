@@ -19,7 +19,7 @@ function App() {
       >
         글 작성
       </button>
-      {WritePostModal && <WritePostForm />}
+      {WritePostModal && <WritePostForm setWritePostModal = {setWritePostModal}/>}
     </div>
   );
 }

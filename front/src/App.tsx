@@ -2,10 +2,15 @@ import React, { useCallback, useState } from "react";
 import "./App.css";
 import WritePostForm from "./components/WritePostForm";
 import Layout from "./layout/Layout";
+import useSWR from 'swr';
+import fetcher from './utils/fetcher';
+import PostList from "./components/PostList";
+
 
 function App() {
   const [WritePostModal, setWritePostModal] = useState(false);
-
+  const {data: postData} = useSWR('http://localhost:3065/posts',fetcher)
+  console.log(postData);
   const onClickWritePost = useCallback(() => {
     setWritePostModal(!WritePostModal);
   }, [WritePostModal]);
@@ -20,6 +25,10 @@ function App() {
           >
             글 작성
           </button>
+          {postData && postData.map((v : any)=>
+            <PostList title = {v.title} content = {v.content}/>
+            )
+          }
           {WritePostModal && (
             <WritePostForm setWritePostModal={setWritePostModal} />
           )}

@@ -1,8 +1,16 @@
 import React, { VFC } from 'react';
 
-const PostList : VFC = () => {
+interface props {
+    title : string,
+    content : string,
+}
+
+const PostList : VFC<props> = ({title, content}) => {
     return(
-        <div>PostList</div>
+        <>
+        <div>{title}</div>
+        <div>{content}</div>
+        </>
     );
 };
 

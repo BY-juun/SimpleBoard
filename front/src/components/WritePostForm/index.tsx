@@ -1,5 +1,6 @@
 import React, { useCallback, useState, VFC } from "react";
 import axios from 'axios';
+import {AiOutlineCloseCircle} from 'react-icons/ai';
 
 interface props{
   setWritePostModal(arg0: boolean) : void;
@@ -16,6 +17,10 @@ const WritePostForm: VFC<props> = ({setWritePostModal}) => {
   const onChangeContent = useCallback((e) => {
     setContent(e.target.value);
   }, []);
+
+  const onClickXbutton = useCallback(()=>{
+    setWritePostModal(false);
+  },[]);
 
   const onSubmitForm = useCallback((e) => {
     e.preventDefault();
@@ -38,11 +43,16 @@ const WritePostForm: VFC<props> = ({setWritePostModal}) => {
 
   return (
     <form
-      className="p-8 border-2 w-2/4 m-auto rounded-2xl fixed inset-1/4  h-3/6"
+      className="p-8 border-2 w-2/4 m-auto rounded-2xl fixed inset-1/4 bg-white h-3/6"
       onSubmit={onSubmitForm}
     >
       <div>
-        <span>Title</span>
+        <div className = 'float-right'>
+          <button  onClick = {onClickXbutton}><AiOutlineCloseCircle size ="24"/></button>
+        </div>
+        <div className='ml-4'>
+          <span>Title</span>
+        </div>
         <input
           className="focus:border-light-blue-500 focus:ring-1 focus:ring-light-blue-500 focus:outline-none 
           block m-auto text-sm text-black placeholder-gray-500 

@@ -9,7 +9,7 @@ import PostList from "./components/PostList";
 
 function App() {
   const [WritePostModal, setWritePostModal] = useState(false);
-  const {data: postData} = useSWR('http://localhost:3065/posts',fetcher)
+  const {data: postData, error, mutate} = useSWR('http://localhost:3065/posts',fetcher);
   console.log(postData);
   const onClickWritePost = useCallback(() => {
     setWritePostModal(!WritePostModal);
@@ -30,7 +30,7 @@ function App() {
             )
           }
           {WritePostModal && (
-            <WritePostForm setWritePostModal={setWritePostModal} />
+            <WritePostForm setWritePostModal={setWritePostModal} mutate = {mutate}/>
           )}
         </div>
       </Layout>

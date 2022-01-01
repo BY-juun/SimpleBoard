@@ -2,15 +2,16 @@ import React, { useCallback, useState } from "react";
 import "./App.css";
 import WritePostForm from "./components/WritePostForm";
 import Layout from "./layout/Layout";
-import useSWR from 'swr';
-import fetcher from './utils/fetcher';
 import PostList from "./components/PostList";
-
+import { useRecoilState, useRecoilValue } from "recoil";
+import {getPost, Post} from './recoil/states'
 
 function App() {
   const [WritePostModal, setWritePostModal] = useState(false);
-  const {data: postData, error, mutate} = useSWR('http://localhost:3065/posts',fetcher);
+  const [postData, setPostData] = useRecoilState(Post);
+  const data = useRecoilValue(getPost);
   console.log(postData);
+  console.log(data);
   const onClickWritePost = useCallback(() => {
     setWritePostModal(!WritePostModal);
   }, [WritePostModal]);
@@ -30,7 +31,7 @@ function App() {
             )
           }
           {WritePostModal && (
-            <WritePostForm setWritePostModal={setWritePostModal} mutate = {mutate}/>
+            <WritePostForm setWritePostModal={setWritePostModal}/>
           )}
         </div>
       </Layout>

@@ -4,10 +4,9 @@ import {AiOutlineCloseCircle} from 'react-icons/ai';
 
 interface props{
   setWritePostModal(arg0: boolean) : void;
-  mutate() : void;
 }
 
-const WritePostForm: VFC<props> = ({setWritePostModal, mutate}) => {
+const WritePostForm: VFC<props> = ({setWritePostModal}) => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
 
@@ -36,7 +35,6 @@ const WritePostForm: VFC<props> = ({setWritePostModal, mutate}) => {
     .then((response)=>{
       console.log(response);
       setWritePostModal(false);
-      mutate();
     })
     .catch((err)=>{
       console.error(err);

@@ -1,6 +1,8 @@
 import React, { useCallback, useState, VFC } from "react";
 import axios from 'axios';
 import {AiOutlineCloseCircle} from 'react-icons/ai';
+import { useResetRecoilState } from "recoil";
+import {refreshPost} from "../../recoil/states"
 
 interface props{
   setWritePostModal(arg0: boolean) : void;
@@ -9,6 +11,7 @@ interface props{
 const WritePostForm: VFC<props> = ({setWritePostModal}) => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+  const [refresh, setRefresh] = useResetRecoilState(refreshPost);
 
   const onChangeTitle = useCallback((e) => {
     setTitle(e.target.value);
@@ -35,6 +38,7 @@ const WritePostForm: VFC<props> = ({setWritePostModal}) => {
     .then((response)=>{
       console.log(response);
       setWritePostModal(false);
+      setRefresh(!refresh);
     })
     .catch((err)=>{
       console.error(err);

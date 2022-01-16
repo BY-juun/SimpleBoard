@@ -1,20 +1,20 @@
 import {atom, selector} from 'recoil';
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 
-export const Post = atom({
-    key : 'Post',
+export const refreshPost = atom({
+    key : 'refreshPost',
     default : [],
 });
 
 export const getPost = selector({
     key : "getPost",
     get : async({get}) =>{
-        const PostData = get(Post);
+        const refresh : Array<any> = get(refreshPost);
         await axios.get('http://localhost:3065/posts',{
             withCredentials : true
         })
         .then(
-            (response)=>
+            (response : AxiosResponse<any, any>)=>
             {
                 console.log(response)
                 return response;
@@ -23,5 +23,5 @@ export const getPost = selector({
         .catch((error)=>{
             console.log(error)
         });
-    }
+    },
 })

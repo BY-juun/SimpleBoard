@@ -3,15 +3,14 @@ import "./App.css";
 import WritePostForm from "./components/WritePostForm";
 import Layout from "./layout/Layout";
 import PostList from "./components/PostList";
-import { useRecoilState, useRecoilValue } from "recoil";
-import {getPost, Post} from './recoil/states'
+import { useRecoilValue } from "recoil";
+import {getPost, } from './recoil/states'
+import { AxiosResponse } from "axios";
 
 function App() {
   const [WritePostModal, setWritePostModal] = useState(false);
-  const [postData, setPostData] = useRecoilState(Post);
-  const data = useRecoilValue(getPost);
-  console.log(postData);
-  console.log(data);
+  const data : <void>  = useRecoilValue(getPost);
+
   const onClickWritePost = useCallback(() => {
     setWritePostModal(!WritePostModal);
   }, [WritePostModal]);
@@ -26,7 +25,7 @@ function App() {
           >
             글 작성
           </button>
-          {postData && postData.map((v : any)=>
+          {data.map((v : any)=>
             <PostList title = {v.title} content = {v.content}/>
             )
           }
